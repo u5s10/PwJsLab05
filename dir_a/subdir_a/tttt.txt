@@ -1,0 +1,48 @@
+[piotr@fedora lab05]$ tree
+.
+├── dir_a
+│   ├── file_a1
+│   ├── file_a2
+│   ├── file_a3
+│   └── subdir_a
+│       ├── file_suba1
+│       ├── file_suba2
+│       └── file_suba3
+├── dir_b
+│   ├── file_b1
+│   ├── file_b2
+│   ├── file_b3
+│   └── file_b4
+├── dir_c
+│   ├── file_s1
+│   ├── file_s2
+│   └── subdir_c
+│       └── subdir_c1
+│           └── filesub1_a1
+├── file1.txt
+├── file2.txt
+├── l1.html
+├── l2.html
+└── lab05.py
+
+6 directories, 18 files
+[piotr@fedora lab05]$ python lab05.py ./
+./dir_b/file_b2
+./dir_b/file_b4
+./dir_b/file_b3
+./dir_b/file_b1
+./l1.html
+./lab05.py
+./l2.html
+./dir_a/subdir_a/file_suba2
+./dir_a/subdir_a/file_suba3
+./dir_a/subdir_a/file_suba1
+./dir_a/file_a1
+./dir_a/file_a2
+./dir_a/file_a3
+./file2.txt
+./file1.txt
+./dir_c/subdir_c/subdir_c1/filesub1_a1
+./dir_c/file_s1
+./dir_c/file_s2
+[piotr@fedora lab05]$ 

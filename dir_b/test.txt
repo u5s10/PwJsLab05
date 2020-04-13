@@ -1,0 +1,13 @@
+;; This buffer is for text that is not saved, and for Lisp evaluation.
+;; To create a file, visit it with C-x C-f and enter text in its buffer.
+
+
+wrzucamy na stack id, dla liczby calkowitej
+zmieniamy push_back na push
+zamiast element ma byc e
+#include <sstream>
+
+stringstream s
+
+
+

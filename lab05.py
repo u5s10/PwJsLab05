@@ -1,65 +1,52 @@
 #!/usr/bin/python
 import sys
+import argparse
 from pathlib import Path
 import os
-
-def isCopy(file1, file2):
-    f1_size = Path(file1).stat().st_size
-    f2_size = Path(file2).stat().st_size
-    
-    if f1_size != f2_size:
-        return 0
-
-    with open(file1, 'rb') as f1, open(file2, 'rb') as f2:
-        while 1:
-            byte_s1 = f1.read(1)
-            byte_s2 = f2.read(1)
-            if not byte_s1 and not byte_s2:
-                break;
-            byte_1 = byte_s1[0]
-            byte_2 = byte_s2[0]
-            if byte_1 != byte_2:
-                return 0
-        return f1_size
+import time
 
 
-def getAllFiles(baseDir, allFiles):
+def bin_rep(file):
+    f1_size = Path(file).stat().st_size
+    bin_rep = ""
+    with open(file, "rb") as f:
+        bin_rep = str(f.read())
+            
+    return bin_rep
+
+
+def get_all_files(baseDir, allFiles):
     outPut = allFiles
     bd = baseDir
     for entry in os.listdir(bd):
         if os.path.isfile(os.path.join(bd, entry)):
             outPut.append(os.path.join(bd, entry))
         elif os.path.isdir(os.path.join(bd, entry)):
-            getAllFiles(os.path.join(bd,entry), outPut)
+            get_all_files(os.path.join(bd, entry), outPut)
     return outPut
 
-
-count = 0
 files = []
-lst = []
-
-for i in range(0,len(sys.argv)):
+for i in range(0, len(sys.argv)):
     if i == 0:
         continue
     lst = []
-    files += getAllFiles(sys.argv[i],lst)
+    files += get_all_files(sys.argv[i], lst)
 
-seen = []
-out = []
-dupsize = 0
+files_dict = {}
 for i in files:
-    seen.append(i)
-    for j in files:
-        if j in seen:
+    bin = bin_rep(i)
+    if bin in files_dict:
+        files_dict[bin].append(i)
+    else:
+        files_dict[bin] = [i]
+
+for key in files_dict:
+    if len(files_dict[key]) > 1:
+        f_size = Path(files_dict[key][0]).stat().st_size*len(files_dict[key]) - 1
+        if f_size < 0:
             continue
-        size = isCopy(i,j)
-        if size > 0:
-            out.append(i)
-            out.append(j)
-            dupsize += size
+        print(f'duplicated: (size: {f_size}b)')
+        for i in files_dict[key]:
+            print(i)
+        print()
 
-print('duplicated: (size: {0}b)'.format(dupsize))
-out = list(set(out))
-
-for i in out:
-    print(i)
